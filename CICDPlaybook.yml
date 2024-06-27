@@ -1,0 +1,10 @@
+- name: CI and CD tasks 
+  hosts: webserver
+  become: true
+  tasks:
+  - name: Build the Source code into an artifact
+    command: chdir=/tmp/code-repo mvn package
+  - name: Build the dockerfile into an image
+    command: chdir=/tmp/code-repo docker build -t myansibleimage .
+  - name: Run the image to deploy app on container
+    command: docker run -d -P myansibleimage
