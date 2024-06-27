@@ -1,0 +1,14 @@
+- name: Install maven and docker on the worker node
+  hosts: webserver
+  become: true
+  tasks:
+  - name: Install CICD tools on worker node
+    package: name={{item}} state=present
+    loop:
+     - git
+     - maven
+     - docker
+  - name: Start Docker Service
+    service: name=docker state=started
+  - name: Clone the source code repo on the worker node
+    git: repo=https://github.com/Sonal0409/MavenBuild-SL.git dest=/tmp/code-repo
